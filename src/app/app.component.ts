@@ -7,7 +7,7 @@ import { Title, Meta } from '@angular/platform-browser';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  property = 'oneplace';
+  property = 'emical';
   selectedCity:any;
   // countryCurrency:any =[
   //     {name: "Afghan Afghani", code: "AFA"},
