@@ -1,0 +1,122 @@
+<div class="container bg font-set">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-xl-6 col-xs-12">
+            <p-card class="container" header="">
+                <p-toolbar class="flex-center text-center text-font">EMI Calculator for Home loan, Pesonal loan, Car
+                    Loan , Business
+                    loan
+                </p-toolbar><br>
+                <div class="p-field sm-col-6 p-md-3 text-center">
+                    <div class="row align">
+                        <div class="col-sm-4"><label for="integeronly" class="text-font">Loan Amount :</label></div>
+                        <div class="col-sm-4">
+                            <input class="input-class" pInputText (input)="calculate()" [(ngModel)]="amount"
+                                mode="decimal" locale="en-IN" maxlength="12" inputId="minmax" [max]="10000000">
+                        </div>
+                    </div>
+                </div>
+                <p-divider></p-divider>
+                <!--  -->
+                <div class="p-field p-col-12 p-md-3 text-center">
+                    <div class="row align">
+                        <div class="col-sm-4"> <label for="percent" class="text-font">Interest Rate :</label></div>
+                        <div class="col-sm-4"><span class="p-float-label p-input-icon-right">
+                                <i class="">%</i>
+                                <input type="text" (input)="calculate()" class="input-class" id="inputtext-right"
+                                    pInputText [(ngModel)]="interestRate">
+                                <label for="inputtext-right"></label>
+                            </span></div>
+                    </div>
+                </div>
+                <p-divider></p-divider>
+
+                <!-- extra emi prepayment -->
+                <!-- <div class="p-field p-col-12 p-md-3 text-center">
+                    <div class="row align">
+                        <div class="col-sm-4"> <label for="percent" class="text-font">Extra EMI :</label></div>
+                        <div class="col-sm-4"><span class="p-float-label p-input-icon-right">
+                                <input type="text" (input)="calculate()" class="input-class"
+                                    id="inputtext-right" pInputText [(ngModel)]="extraPreEmi">
+                                <label for="inputtext-right"></label>
+                            </span></div>
+                    </div>
+                </div> -->
+                <p-divider></p-divider>
+                <!--  -->
+                <div class="p-field p-col-12 p-md-3 text-center">
+                    <div class="row align">
+                        <div class="col-sm-4"><label for="percent" class="text-font">Tenure :</label></div>
+                        <div class="col-sm-4">
+                            <div class="">
+                                <input [(ngModel)]="tenure" maxlength="2" pattern="[1-9]{1}[0-9]{9}"
+                                    (input)="calculate()" type="text" pInputText placeholder="">
+                                <!-- <button type="button" pButton pRipple style="font-size: 10px;" (click)="convertTenure('M')">Months</button>
+                                <button type="button" pButton pRipple style="font-size: 10px;" (click)="convertTenure('Y')">Years</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <!-- <div class="col-sm-3 col-md-3 col-xl-3 col-xs-12flex-center">
+            <p-card class="container output">
+                <p class="text-center emi-txt">Your Monthly EMI will be</p>
+                <p class="emi" *ngIf="emi > 0"><span class="currency-txt">₹</span> {{emi | number}}</p>
+                <p  class="info-pay text-center " style="margin: 0;padding: 0;">Interest Payable :   </p>
+                <p class="text-center" > ₹ {{totalInterest | number}} </p>
+                <p  class="info-pay text-center" style="margin: 0;padding: 0;">Total Payable (Principal + Interest) :</p>
+                <p class="text-center"> ₹ {{totalPayable | number}}</p>
+            </p-card>
+
+        </div> -->
+
+
+        <div class="col-sm-6 col-md-6 col-xs-12 col-xl-6">
+            <p-card class="container">
+                <p-chart class="px-0" type="pie" width="205" height="205" [data]="data"></p-chart>
+                <p class="text-center emi-txt" style="margin: 0px;">Your Monthly EMI will be</p>
+                <p class="emi" *ngIf="emi > 0"><span class="currency-txt"></span> {{emi| currency:
+                    'INR':'symbol':'1.0-0'}}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="info-pay text-center " style="margin: 0;padding: 0;">Interest Payable :</p>
+                        <p class="text-center"> {{totalInterest | currency: 'INR':'symbol':'1.0-0'}} </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="info-pay text-center" style="margin: 0;padding: 0;">Total Payable:</p>
+                        <p class="text-center"> {{totalPayable | currency: 'INR':'symbol':'1.0-0'}}</p>
+                    </div>
+                </div>
+
+
+            </p-card>
+        </div>
+
+    </div>
+    <br>
+    <div class="bg-light">
+        <table class="table table-responsive table-hover table-bordered">
+            <thead class="" style="background-color: lightblue;">
+                <tr class="text-center">
+                    <th scope="col">Months</th>
+                    <!-- <th scope="col"></th> -->
+                    <th scope="col">Principal</th>
+                    <th scope="col">Interest</th>
+                    <th scope="col">Total Paid</th>
+                    <th scope="col">Balance</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr *ngFor="let item of table_list;let i=index">
+                    <th scope="row">{{i+1}}</th>
+                    <!-- <td>{{item.year}}</td> -->
+                    <td>{{item.month_principal | currency: 'INR':'symbol':'1.0-0'}}</td>
+                    <td>{{item.monthly_interest | currency: 'INR':'symbol':'1.0-0'}}</td>
+                    <td>{{item.totalPaid | currency: 'INR':'symbol':'1.0-0'}}</td>
+                    <td>{{math.trunc(item.balance) | currency: 'INR':'symbol':'1.0-0'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
